@@ -1,0 +1,45 @@
+{
+    "name": "sitetus/laravel-collector",
+    "description": "Composer wrapper of the Sitetus read-only collector for Laravel: same core, installed through a service provider.",
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": ">=8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+        "sitetus/collector": "^0.7.2"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0|^11.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/sitetus/collector-php"
+        }
+    ],
+    "autoload-dev": {
+        "psr-4": {
+            "Sitetus\\LaravelCollector\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Sitetus\\LaravelCollector\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sitetus\\LaravelCollector\\SitetusServiceProvider"
+            ],
+            "aliases": {
+                "Sitetus": "Sitetus\\LaravelCollector\\Facades\\Sitetus"
+            }
+        }
+    }
+}
