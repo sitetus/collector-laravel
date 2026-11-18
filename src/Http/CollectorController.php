@@ -54,7 +54,9 @@ final class CollectorController
         }
 
         $inventory = new Inventory($config);
-        $health = new Health;
+        // Core 0.7.4+: the project key keys the account hash of the hosting-layout row;
+        // an older core ignores the argument.
+        $health = new Health($config->projectKey);
 
         $root = $inventory->rootPath();
         $framework = $inventory->detectFramework($root);
@@ -65,8 +67,10 @@ final class CollectorController
         );
 
         // The wrapper runs the same modules the single file would,
-        // selected by config instead of by stripping code.
-        $modules = (new ModuleRunner($config))->run($root, $framework, time());
+        // selected by config instead of by stripping code. Core 0.7.5: the
+        // optional secret_check module reads the application's configuration,
+        // so the container is handed over; an older core ignores the argument.
+        $modules = (new ModuleRunner($config))->run($root, $framework, time(), app());
 
         $envelope = (new Envelope($config))->build(
             2,
