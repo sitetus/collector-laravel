@@ -49,7 +49,7 @@ final class CollectorController
         );
 
         if ($status !== 200) {
-            // 404s stay anonymous and body-less, exactly like the single file.
+            // Refusals stay body-less, exactly like the single file.
             return response('', $status)->withHeaders($extraHeaders);
         }
 

@@ -26,7 +26,7 @@ None of these values is a secret: the public key verifies the panel's signatures
 
 ## What it does
 
-- Registers the pull route `/sitetus/<install-path>`; every unsigned or invalid request gets a bodyless `404`, exactly as if the route did not exist.
+- Registers the pull route `/sitetus/<install-path>`; a request without the right project key gets a bodyless `404`, exactly as if the route did not exist; a request that names the key but fails verification gets a bodyless `403` with the reason in the `X-Sitetus-Error` header.
 - Writes the scheduler and queue heartbeats itself, so the panel can watch both without any line added to your code.
 - Lets you add developer-defined checks to the envelope — numbers and booleans only, never text:
 

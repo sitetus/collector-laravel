@@ -19,12 +19,21 @@ final class WrapperEndpointTest extends TestCase
         $this->assertSame('', $response->getContent());
     }
 
-    public function testTamperedSignatureIsNotFound(): void
+    /**
+     * Core 0.7.4+: a caller that names the right project key but fails the
+     * signature gets a bodyless 403 with the reason, so a broken pairing can be told
+     * apart from a missing file. A caller without the key still gets the 404 above.
+     */
+    public function testTamperedSignatureIsForbiddenWithItsReason(): void
     {
         $headers = $this->signedHeaders(self::PATH);
         $headers['X-Sitetus-Signature'] = base64_encode(str_repeat('x', 64));
 
-        $this->get(self::PATH, $headers)->assertNotFound();
+        $response = $this->get(self::PATH, $headers);
+
+        $response->assertForbidden();
+        $response->assertHeader('X-Sitetus-Error', 'signature');
+        $this->assertSame('', $response->getContent());
     }
 
     public function testSignedRequestReturnsTheWrapperEnvelope(): void
