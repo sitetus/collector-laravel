@@ -67,10 +67,8 @@ final class CollectorController
         );
 
         // The wrapper runs the same modules the single file would,
-        // selected by config instead of by stripping code. Core 0.7.5: the
-        // optional secret_check module reads the application's configuration,
-        // so the container is handed over; an older core ignores the argument.
-        $modules = (new ModuleRunner($config))->run($root, $framework, time(), app());
+        // selected by config instead of by stripping code.
+        $modules = (new ModuleRunner($config))->run($root, $framework, time());
 
         $envelope = (new Envelope($config))->build(
             2,
